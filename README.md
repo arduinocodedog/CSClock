@@ -22,7 +22,7 @@ First, understand that it takes about 30 seconds for the Movement Sensor to warm
 
 Changing the Clock Time and Movement Sensor Check Delay
 
-The Clock Time - This is how much time a game for you can take and a countdown will occur from this initial value, if it's your move.  Valid Range - 5 to 95 minutes. Default: 60 seconds.
+The Clock Time - This is how much time a game for you can take and a countdown will occur from this initial value, if it's your move.  Valid Range - 5 to 95 minutes. Default: 60 minutes.
 
 The Movement Sensor Check Delay - This is how much time it takes before the movement sensor will start monitoring for movement.  Note: This is to give you time to note your move on a scoresheet or electronic notation device.   Valid Range - 5 to 15 seconds.  Default: 10 seconds.
 
