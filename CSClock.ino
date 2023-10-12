@@ -155,17 +155,8 @@ void loop()
 // Reset to Startup Settings
 void performReset()
 {
-  if (tickEvent != EVENT_OFF)
-  {
-    t.stop(tickEvent);
-    tickEvent = EVENT_OFF;
-  }
-
-  if (waitEvent != EVENT_OFF)
-  {
-    t.stop(waitEvent);
-    waitEvent = EVENT_OFF;
-  }
+  stopTickEvent();
+  stopWaitEvent();
 
   blinkState = true;
   firstMove = true;
@@ -188,8 +179,7 @@ void performReset()
 
   tm.reset();
 
-  if (tickEvent == EVENT_OFF)
-    tickEvent = t.every(500, updatetick);
+  startTickEvent();
 }
 
 //read buttons
@@ -231,8 +221,7 @@ void checkStopClock()
       ClearDelay((playerColor == 1) ? 6 : 2);
       
       // Wait defined seconds before the pir sensor will check for movement again
-      if (waitEvent == EVENT_OFF)
-        waitEvent = t.every((pirCheckDelay * 1000), updatewait);
+      startWaitEvent();
     }
   }
 }
@@ -246,7 +235,6 @@ void clearPir()
 // Check Pir Motion Sensor
 void checkPir()
 {
-  // pirState = LOW;
   if ((playerColor != 0) && (activeColor != playerColor) && (pirState != HIGH) && (waitEvent == EVENT_OFF))
   {
     delay(300);
@@ -268,7 +256,7 @@ void clearButtons()
 // Check TM1638 buttons
 void checkButtons() 
 {
-  switch (readButtons())               // depending on which button was pushed, we perform an action
+  switch (readButtons()) // depending on which button was pushed, we perform an action
   {
     case btnWhite:
     {
@@ -346,8 +334,8 @@ void checkButtons()
       {
         playerColor = 2; 
         activeColor = 1;
-        if (waitEvent == EVENT_OFF)
-          waitEvent = t.every((pirCheckDelay * 1000), updatewait);
+        startWaitEvent();
+        
         Seconds = 1;
         updateDisplay();
       }
@@ -594,10 +582,36 @@ void updatetick()
 void updatewait()
 {
   // We just need to turn off the Event if it's active. 
+  stopWaitEvent();
+}
+
+void startWaitEvent()
+{
+  stopWaitEvent();
+  waitEvent = t.every((pirCheckDelay * 1000), updatewait);
+}
+
+void stopWaitEvent()
+{
   if (waitEvent != EVENT_OFF)
   {
     t.stop(waitEvent);
     waitEvent = EVENT_OFF;
+  }
+}
+
+void startTickEvent()
+{
+  stopTickEvent();
+  tickEvent = t.every(500, updatetick);
+}
+
+void stopTickEvent()
+{
+  if (tickEvent != EVENT_OFF)
+  {
+    t.stop(tickEvent);
+    tickEvent = EVENT_OFF;
   }
 }
 
