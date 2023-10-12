@@ -204,7 +204,8 @@ int readButtons()
 // Clear StopClock (Touch Sensor)
 void clearStopClock()
 {
-  while (digitalRead(stopclockPin));
+  if ((playerColor != 0) && (playerColor == activeColor))
+    while (digitalRead(stopclockPin));
 }
 
 // Check StopClock (Touch Sensor)
@@ -229,7 +230,8 @@ void checkStopClock()
 // Clear Pir Motion Sensor
 void clearPir()
 {
-  while (digitalRead(pirPin));
+  if ((playerColor != 0) && (activeColor != playerColor))
+    while (digitalRead(pirPin));
 }
 
 // Check Pir Motion Sensor
